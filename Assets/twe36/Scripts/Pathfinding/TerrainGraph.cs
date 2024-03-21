@@ -49,12 +49,12 @@ namespace YourUserCode
                         // TODO: Set the proper edge/connection cost for each of the 8 directions
                         cost[x, z, 0] = Mathf.Abs(grid[x, z].nodeHeight - grid[x - 1, z].nodeHeight); // west of current node  
                         cost[x, z, 1] = Mathf.Abs(grid[x, z].nodeHeight - grid[x - 1, z + 1].nodeHeight); // north-west of current node  
-                        cost[x, z, 2] = Mathf.Abs(grid[x, z].nodeHeight - grid[x, z].nodeHeight); // north of current node  
-                        cost[x, z, 3] = Mathf.Abs(grid[x, z].nodeHeight - grid[x, z].nodeHeight); // north-east of current node  
-                        cost[x, z, 4] = Mathf.Abs(grid[x, z].nodeHeight - grid[x, z].nodeHeight); // east of current node  
-                        cost[x, z, 5] = Mathf.Abs(grid[x, z].nodeHeight - grid[x, z].nodeHeight); // south-east of current node  
-                        cost[x, z, 6] = Mathf.Abs(grid[x, z].nodeHeight - grid[x, z].nodeHeight); // south of current node  
-                        cost[x, z, 7] = Mathf.Abs(grid[x, z].nodeHeight - grid[x, z].nodeHeight); // south-west of current node  
+                        cost[x, z, 2] = Mathf.Abs(grid[x, z].nodeHeight - grid[x, z + 1].nodeHeight); // north of current node  
+                        cost[x, z, 3] = Mathf.Abs(grid[x, z].nodeHeight - grid[x + 1, z + 1].nodeHeight); // north-east of current node  
+                        cost[x, z, 4] = Mathf.Abs(grid[x, z].nodeHeight - grid[x + 1, z].nodeHeight); // east of current node  
+                        cost[x, z, 5] = Mathf.Abs(grid[x, z].nodeHeight - grid[x + 1, z - 1].nodeHeight); // south-east of current node  
+                        cost[x, z, 6] = Mathf.Abs(grid[x, z].nodeHeight - grid[x, z - 1].nodeHeight); // south of current node  
+                        cost[x, z, 7] = Mathf.Abs(grid[x, z].nodeHeight - grid[x - 1, z - 1].nodeHeight); // south-west of current node  
                     }
                 }
             }
@@ -69,14 +69,14 @@ namespace YourUserCode
 
             Vector2[] directions =
             {
-                new Vector2(0, 0), // west
-                new Vector2(0, 0), // north-west
-                new Vector2(0, 0),  // north
-                new Vector2(0, 0),  // north-east
-                new Vector2(0, 0),  // east
-                new Vector2(0, 0), // south-east
-                new Vector2(0, 0), // south
-                new Vector2(0, 0) // south-west
+                new Vector2(-1, 0), // west
+                new Vector2(-1, 1), // north-west
+                new Vector2(0, 1),  // north
+                new Vector2(1, 1),  // north-east
+                new Vector2(1, 0),  // east
+                new Vector2(1, -1), // south-east
+                new Vector2(0, -1), // south
+                new Vector2(-1, -1) // south-west
             };
 
             // Find all nodes via the 8 directions
@@ -88,13 +88,17 @@ namespace YourUserCode
                 // y here is actually the z
                 bool doExist = (v.x >= 0 && v.x < tWidth && v.y >= 0 && v.y < tLength) ? true : false;
 
-                // Check if the neighbouring node is too high. If it is, deem it impassable
-                bool passable = grid[(int)v.x, (int)v.y].nodeHeight < maxHeight;
-
-                if (doExist && passable)
+                if (doExist)
                 {
-                    neighbours.Add(grid[(int)v.x, (int)v.y]);
+                    // Check if the neighbouring node is too high. If it is, deem it impassable
+                    bool passable = grid[(int)v.x, (int)v.y].nodeHeight < maxHeight;
+
+                    if (passable)
+                    {
+                        neighbours.Add(grid[(int)v.x, (int)v.y]);
+                    }
                 }
+                
             }
 
             return neighbours;
@@ -107,7 +111,11 @@ namespace YourUserCode
 
             for (int index = 0; index < 8; index++)
             {
-                // TODO: Search for minimum vertical cost of current node
+                float thisCost = cost[(int)n.nodePosition.X, (int)n.nodePosition.Y, index];
+                if (thisCost < minCost) 
+                { 
+                    minCost = thisCost;
+                }
             }
 
             // Since graph is a tile grid, horizontal cost is 1

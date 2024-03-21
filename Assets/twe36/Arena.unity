@@ -156,7 +156,7 @@ MonoBehaviour:
   start: {fileID: 1032134466}
   end: {fileID: 155748777}
   lr: {fileID: 57004725}
-  algorithm: 0
+  algorithm: 1
   startPosText: {fileID: 1179052483}
   endPosText: {fileID: 67342423}
   accumulatedCostText: {fileID: 1253936662}
@@ -535,7 +535,7 @@ Transform:
   m_GameObject: {fileID: 155748773}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 58.4, y: 5, z: 93.5}
+  m_LocalPosition: {x: 88, y: 5, z: 62}
   m_LocalScale: {x: 1, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -874,7 +874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 5
-  m_FollowOffset: {x: 0, y: 8.749527, z: -8.545149}
+  m_FollowOffset: {x: 0, y: 1.7, z: -12}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1610,7 +1610,7 @@ Transform:
   m_GameObject: {fileID: 1032134462}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 79.9, y: 5, z: 13.4}
+  m_LocalPosition: {x: 33, y: 5, z: 11}
   m_LocalScale: {x: 1, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2628,7 +2628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 5
-  m_FollowOffset: {x: 0, y: 8.749527, z: -8.545149}
+  m_FollowOffset: {x: 0, y: 1.7, z: -12}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -2962,7 +2962,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 5
-  m_FollowOffset: {x: 0, y: 8.749527, z: -8.545149}
+  m_FollowOffset: {x: 0, y: 1.7, z: -12}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1

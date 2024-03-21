@@ -26,6 +26,7 @@ namespace YourUserCode
             // START OF ALGORITHM IMPLEMENTATION
 
             // TODO: Queue to visit the starting node
+            nodesToVisit.Enqueue(startNode);
 
             // Sets where we came from, since we start from startNode, we also came from startNode
             // The fist startNode defines the current node, the second startNode defines the source node
@@ -37,7 +38,8 @@ namespace YourUserCode
             // Iterate through the rest of the nodes
             while (nodesToVisit.Count > 0)
             {
-                // TODO: Visit the next node in the queue
+                //Grab the current node.
+                currentNode = nodesToVisit.Dequeue();
 
                 if (currentNode == endNode)
                 {
@@ -51,11 +53,14 @@ namespace YourUserCode
                 {
                     if (!visitedNodes.ContainsKey(adjacentNode))
                     {
-                        // Code goes here...
+                        //Add the adjacent node with the curernt node as the source.
+                        //Add the adjacent node to the queue.
+                        nodesToVisit.Enqueue(adjacentNode);
+
+                        //Add the adjacent node to the current node as the source.
+                        visitedNodes.Add(adjacentNode, currentNode);
                     }
                 }
-
-                break; // TODO: Remove this break once you've filled in your code. This stops Unity from freezing.
             }
 
             // TODO: Construct the path, follow back the visited nodes where connections were made
@@ -63,9 +68,9 @@ namespace YourUserCode
             // Add the visited nodes to the provided path list
             while (currentNode != startNode)
             {
-                // Code goes here...
-
-                break; // TODO: Remove this break once you've filled in your code. This stops Unity from freezing.
+                path.Add(currentNode);
+                currentNode = visitedNodes[currentNode];
+                
             }
             path.Reverse();
             return path;
@@ -87,6 +92,7 @@ namespace YourUserCode
             // START OF ALGORITHM IMPLEMENTATION
 
             // TODO: Queue to visit the starting node with a cost/priority of 0
+            nodesToVisit.Enqueue(startNode, 0);
 
             // Sets where we came from, since we start from startNode, we also came from startNode
             // The fist startNode defines the current node, the second startNode defines the source node
@@ -101,6 +107,7 @@ namespace YourUserCode
             while (nodesToVisit.Count > 0)
             {
                 // TODO: Visit the next node in the queue
+                currentNode = nodesToVisit.Dequeue();
 
                 if (currentNode == endNode)
                 {
@@ -114,13 +121,15 @@ namespace YourUserCode
                     {
                         // TODO: If the neighbour has not been visited before, then calculate an estimated new cost by
                         // adding the accumulated cost of the current node and the next minimum cost of the current node (see TerrainGraph)
-                        float newCost = 0;
+                        float newCost = accumulatedCost[currentNode] + tGraph.NextMinimumCost(currentNode);
                         
+
                         // Now, check if the cost of the neighbouring node has been accounted for already or
                         // if the new estimated cost is smaller than the current cost of the neighbouring node. 
                         if (!accumulatedCost.ContainsKey(adjacentNode) || newCost < accumulatedCost[adjacentNode])
                         {
                             // TODO: The accumulated cost of the neighbouring node will take the new estimated cost
+                            accumulatedCost[adjacentNode] = newCost;
 
                             // The neighbouring node has now been processed. Now, make a connection between the adjacent and current node
                             visitedNodes[adjacentNode] = currentNode;
@@ -140,7 +149,9 @@ namespace YourUserCode
             // Add the visited nodes to the provided path list
             while (currentNode != startNode)
             {
-                // Code goes here...
+                path.Add(currentNode);
+                currentNode = visitedNodes[currentNode];
+                
             }
             path.Reverse();
             return path;
@@ -162,6 +173,7 @@ namespace YourUserCode
             // START OF ALGORITHM IMPLEMENTATION
 
             // TODO: Queue to visit the starting node with a cost/priority of 0
+            nodesToVisit.Enqueue(startNode, 0);
 
             // Sets where we came from, since we start from startNode, we also came from startNode
             // The fist startNode defines the current node, the second startNode defines the source node
@@ -176,6 +188,8 @@ namespace YourUserCode
             while (nodesToVisit.Count > 0)
             {
                 // TODO: Visit the next node in the queue
+                currentNode = nodesToVisit.Dequeue();
+
 
                 if (currentNode == endNode)
                 {
@@ -189,14 +203,14 @@ namespace YourUserCode
                     {
                         // TODO: If the neighbour has not been visited before, then calculate an estimated new cost by
                         // adding the accumulated cost of the current node and the next minimum cost of the current node (see TerrainGraph)
-                        float newCost = 0;
+                        float newCost = accumulatedCost[currentNode] + tGraph.NextMinimumCost(currentNode);
 
                         // Now, check if the cost of the neighbouring node has been accounted for already or
                         // if the new estimated cost is smaller than the current cost of the neighbouring node. 
                         if (!accumulatedCost.ContainsKey(adjacentNode) || newCost < accumulatedCost[adjacentNode])
                         {
                             // TODO: The accumulated cost of the neighbouring node will take the new estimated cost
-
+                            accumulatedCost[adjacentNode] = newCost;
                             // The neighbouring node has now been processed. Now, make a connection between the adjacent and current node
                             visitedNodes[adjacentNode] = currentNode;
 
@@ -238,7 +252,9 @@ namespace YourUserCode
             // Add the visited nodes to the provided path list
             while (currentNode != startNode)
             {
-                // Code goes here...
+                path.Add(currentNode);
+                currentNode = visitedNodes[currentNode];
+                
             }
             path.Reverse();
             return path;
@@ -256,40 +272,43 @@ namespace YourUserCode
         // 2. Calculating the square root of the sum of distance X and distance Y
         private static float HeuristicEuclidian(Node a, Node b)
         {
-            float distX = 0f;
-            float distY = 0f;
+            float distX = Mathf.Abs(a.nodePosition.X - b.nodePosition.X);
+            float distY = Mathf.Abs(a.nodePosition.Y - b.nodePosition.Y);
 
-            return 0f;
+            float eucDistance = Mathf.Pow(distX, 2) + Mathf.Pow(distY, 2);
+            float finalDistance = Mathf.Sqrt(eucDistance);
+
+            return finalDistance;
         }
 
         // TODO: Manhattan distance. Calculate the absolute distance between the x and y coordinates of two nodes.
         // After which, get the sum of distance X and distance Y
         private static float HeuristicManhattan(Node a, Node b)
         {
-            float distX = 0f;
-            float distY = 0f;
+            float distX = Mathf.Abs(a.nodePosition.X - b.nodePosition.X);
+            float distY = Mathf.Abs(a.nodePosition.Y - b.nodePosition.Y);
 
-            return 0f;
+            return Mathf.Sqrt(distX + distY);
         }
 
         // TODO: Diagonal distance. Calculate the maximum absolute distances between the x and y coordinates of two nodes.
         // See Mathf.Max() function.
         private static float HeuristicDiagonal(Node a, Node b)
         {
-            float distX = 0f;
-            float distY = 0f;
+            float distX = Mathf.Abs(a.nodePosition.X - b.nodePosition.X);
+            float distY = Mathf.Abs(a.nodePosition.Y - b.nodePosition.Y);
 
-            return 0f;
+            return Mathf.Max(distX, distY);
         }
 
         // TODO: Octile distance. Calculate the maximum and minimum absolute distances between the x and y coordinates of two nodes.
         private static float HeuristicOctile(Node a, Node b)
         {
-            float distX = 0f;
-            float distY = 0f;
+            float distX = Mathf.Abs(a.nodePosition.X - b.nodePosition.X);
+            float distY = Mathf.Abs(a.nodePosition.Y - b.nodePosition.Y);
 
-            float diagonal = 0f; // Min
-            float straight = 0f; // Max minus the diagonal movement
+            float diagonal = Mathf.Min(distX, distY); // Min
+            float straight = Mathf.Max(distX, distY) - diagonal; // Max minus the diagonal movement
 
             return diagonal * Mathf.Sqrt(2) + straight;
         }
