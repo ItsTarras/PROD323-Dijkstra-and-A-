@@ -37,12 +37,13 @@ namespace twe36
         void Start()
         {
             graph = new TerrainGraph();
+            RenderPath();
+            UpdateInfo();
         }
 
         void Update()
         {
-            RenderPath();
-            UpdateInfo();
+            
         }
 
         private void RenderPath()

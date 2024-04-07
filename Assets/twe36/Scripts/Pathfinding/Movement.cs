@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
 using twe36;
+
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -15,12 +13,17 @@ public class Movement : MonoBehaviour
     private float maxLinearSpeed = 10f;
     private Rigidbody rb;
     private Vector3 moveInput;
+    private bool finished = false;
 
     //Introduce a variable to handle the ratios of the avoidance.
     [Range(0.0f, 1f)]
     public float avoidanceWeight = 0.5f;
 
 
+    //Debug information.
+    public bool nodeAdditionDebug = false;
+    public bool debugVelocity = false;
+    
 
     //Raycast variables.
     [Range(0, 5f)]
@@ -47,6 +50,18 @@ public class Movement : MonoBehaviour
 
     //Path variables for the algorithm.
     private List<Node> path = new List<Node>(); // Paht for the object to follow.
+
+    //visitedNodes list, with a dummy value to get started with.
+    private List<Node> visitedPaths = new List<Node>
+    {
+        new Node(0, 0),
+        new Node(0, 0),
+        new Node(0, 0),
+    };
+
+    private Node currentTarget;
+
+
     private TerrainGraph graph; // A graph to store information.
     public Transform start; // The start transform node
     public Transform end; // The finish line.
@@ -56,7 +71,8 @@ public class Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         graph = new TerrainGraph();
-
+        generatePath();
+        debugPath();
     }
 
 
@@ -75,8 +91,6 @@ public class Movement : MonoBehaviour
         Node endNode = graph.grid[endX, endZ];
 
         path = PathAlgorithm.AStar(graph, startNode, endNode, 2);
-
-        
     }
 
     void debugPath()
@@ -93,7 +107,7 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        // Gather player input
+        //Playe rinput.
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         moveInput = new Vector3(horizontalInput, 0f, verticalInput).normalized;
@@ -101,9 +115,9 @@ public class Movement : MonoBehaviour
 
         //Constantly update the current target node that we want to move to.
         //Create Path
-        generatePath();
 
-        debugPath();
+
+        
     }
 
     //Physics uses fixedUpdate for some reason. I DONT MAKE THE RULES!
@@ -135,7 +149,7 @@ public class Movement : MonoBehaviour
         Vector3 raycastDirection = (Vector3.forward + rb.velocity * 5).normalized;
 
         // Calculate the rotation quaternion for right direction (45 degrees)
-        Quaternion rotationQuaternion = Quaternion.Euler(0, 35, 0);
+        Quaternion rotationQuaternion = Quaternion.Euler(0, 30, 0);
 
         // Rotate the initial raycast direction to the left
         Vector3 rightRaycastDirection = rotationQuaternion * raycastDirection;
@@ -185,6 +199,8 @@ public class Movement : MonoBehaviour
             return new RaycastHit();
         }
     }
+
+
     //Generated a forward raycast with detection logic.
     private RaycastHit forwardRaycast()
     {
@@ -221,7 +237,7 @@ public class Movement : MonoBehaviour
         Vector3 raycastDirection = (Vector3.forward + rb.velocity * 5).normalized;
 
         // Calculate the rotation quaternion for left direction (45 degrees)
-        Quaternion rotationQuaternion = Quaternion.Euler(0, -35, 0);
+        Quaternion rotationQuaternion = Quaternion.Euler(0, -30, 0);
 
         // Rotate the initial raycast direction to the left
         Vector3 leftRaycastDirection = rotationQuaternion * raycastDirection;
@@ -244,20 +260,6 @@ public class Movement : MonoBehaviour
             return new RaycastHit();
         }
     }
-
-    //Return a float distance from a particular raycast.
-    private float collisionDistance(RaycastHit hit)
-    {
-        if (hit.collider != null)
-        {
-            return hit.distance;
-        }
-        else
-        {
-            return float.PositiveInfinity;
-        }
-    }
-
 
     //This function checks if the sphere is in contact with the ground. If it is, we can move. (Using debugging rn).
     private void groundMovement(RaycastHit forward, RaycastHit backward, RaycastHit forwardLeft, RaycastHit forwardRight)
@@ -293,23 +295,76 @@ public class Movement : MonoBehaviour
     {
         //Initial infinity.
         float closestDistance = float.PositiveInfinity;
-        Vector3 closestPoint = Vector3.zero;
+
+        //Assumes the end by default. Default value means we should already be at the finish line.
+        Vector3 closestPoint = new Vector3(path[^1].nodePosition.X, path[^1].nodeHeight, path[^1].nodePosition.Y);
 
         // Iterate through each node in the path
-        foreach (Node node in path)
+        if(!finished)
         {
-            Vector3 nodePoint = new Vector3(node.nodePosition.X, node.nodeHeight, node.nodePosition.Y);
-
-            //Get the distances
-            float distance = Vector3.Distance(transform.position, nodePoint);
-
-            //Update the nodes
-            if (distance < closestDistance)
+            foreach (Node node in path)
             {
-                closestDistance = distance;
-                closestPoint = nodePoint;
+                if (!visitedPaths.Contains(node))
+                {
+                    Vector3 nodePoint = new Vector3(node.nodePosition.X, node.nodeHeight, node.nodePosition.Y);
+
+                    //Get the distances
+                    float distance = Vector3.Distance(transform.position, nodePoint);
+
+                    //Update the nodes
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestPoint = nodePoint;
+                        currentTarget = node;
+                    }
+                }
+            }
+
+
+
+
+            //If we're near the current target node, add it to the list of visited nodes.
+            if ((transform.position.x >= currentTarget.nodePosition.X - 1 && transform.position.x <= currentTarget.nodePosition.X + 1) &&
+                transform.position.z >= currentTarget.nodePosition.Y - 1 && transform.position.z <= currentTarget.nodePosition.Y + 1)
+            {
+                //Grab the two nodes, and add them to the visitedPaths list, and remove two of the old ones.
+                int numberNodes = path.GetRange(0, path.IndexOf(currentTarget)).Count;
+                if(numberNodes > 5)
+                {
+                    numberNodes = 5;
+                }
+
+
+
+                //Run a loop.
+                foreach (Node nodes in path.GetRange(path.IndexOf(currentTarget) - numberNodes, numberNodes))
+                    {
+                        visitedPaths.Add(nodes);
+                        visitedPaths.RemoveRange(0, 1);
+                    }
+
+                if(nodeAdditionDebug)
+                {
+                    Debug.Log("Added a node to the visited nodes path!");
+                }
+
+
+                //Add the current Node to the list of our visited Nodes.
+                visitedPaths.Add(currentTarget);
+
+                //This removes the previous node so we don't get stuck in a loop, but can go back if we need to due to knockback.
+                visitedPaths.RemoveRange(0, 1);
+
+                // If we're on the lat item of the path, stop moving.
+                if (currentTarget == path[^1])
+                {
+                    finished = true;
+                }
             }
         }
+
+
 
         // Return the closest point on the path
         return closestPoint;
@@ -346,7 +401,7 @@ public class Movement : MonoBehaviour
          * */
 
         // Combine the avoidance direction with the input direction
-        Vector3 combinedDirection = (inputDirection).normalized;
+        Vector3 combinedDirection = (inputDirection);
 
         // Calculate the force direction by combining the up direction and combined direction
         Vector3 forceDirection = Vector3.Cross(upDirection, Vector3.Cross(Vector3.up, combinedDirection)).normalized;
@@ -354,7 +409,7 @@ public class Movement : MonoBehaviour
         // Scale the force based on the player's input
         Vector3 finalDirection = forceDirection.normalized * Mathf.Min(moveForce, 10f); // Ensure the force doesn't exceed the maximum force limit
 
-        Debug.Log("Final direction = " + finalDirection);
+        //Debug.Log("Final direction = " + finalDirection);
         // Move the sphere.
         rb.AddForce(finalDirection, ForceMode.Acceleration);
 
@@ -374,7 +429,10 @@ public class Movement : MonoBehaviour
 
 
 
-
+        if (debugVelocity)
+        {
+            Debug.Log("Current Velocity: " + rb.velocity); 
+        }
         // Limit the velocity if it exceeds the maximum velocity
         if (rb.velocity.magnitude > maxLinearSpeed)
         {

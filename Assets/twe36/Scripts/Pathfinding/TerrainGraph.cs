@@ -88,13 +88,23 @@ namespace twe36
                 // y here is actually the z
                 bool doExist = (v.x >= 0 && v.x < tWidth && v.y >= 0 && v.y < tLength) ? true : false;
 
+                
+
                 if (doExist)
                 {
-                    // Check if the neighbouring node is too high. If it is, deem it impassable
-                    bool passable = grid[(int)v.x, (int)v.y].nodeHeight < maxHeight;
+                    float slope = PathAlgorithm.CalculateSlope(n, grid[(int)v.x, (int)v.y]);
+                    // Check if the neighbouring node is too high. If it is, deem it impassable.
+
+                    //ALSO CHECK THE SLOPE!!!
+                    bool passable = (grid[(int)v.x, (int)v.y].nodeHeight < maxHeight && slope < 40);
 
                     if (passable)
                     {
+                        if (slope != 0)
+                        {
+                            Debug.Log(slope);
+                        }
+
                         neighbours.Add(grid[(int)v.x, (int)v.y]);
                     }
                 }
