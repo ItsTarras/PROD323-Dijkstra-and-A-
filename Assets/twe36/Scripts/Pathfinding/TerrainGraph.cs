@@ -96,7 +96,8 @@ namespace twe36
                     // Check if the neighbouring node is too high. If it is, deem it impassable.
 
                     //ALSO CHECK THE SLOPE!!!
-                    bool passable = (grid[(int)v.x, (int)v.y].nodeHeight < maxHeight && slope < 40);
+                    float neighbourHeight = grid[(int)v.x, (int)v.y].nodeHeight;
+                    bool passable = (neighbourHeight < maxHeight && slope < 25 && neighbourHeight < n.nodeHeight + 1.5);
 
                     if (passable)
                     {

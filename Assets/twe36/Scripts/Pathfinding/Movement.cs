@@ -14,7 +14,7 @@ public class Movement : MonoBehaviour
     private Rigidbody rb;
     private Vector3 moveInput;
     private bool finished = false;
-
+    public float nodeAcceptanceRange = 1f; 
     //Introduce a variable to handle the ratios of the avoidance.
     [Range(0.0f, 1f)]
     public float avoidanceWeight = 0.5f;
@@ -325,14 +325,18 @@ public class Movement : MonoBehaviour
 
 
             //If we're near the current target node, add it to the list of visited nodes.
-            if ((transform.position.x >= currentTarget.nodePosition.X - 1 && transform.position.x <= currentTarget.nodePosition.X + 1) &&
-                transform.position.z >= currentTarget.nodePosition.Y - 1 && transform.position.z <= currentTarget.nodePosition.Y + 1)
+            if ((currentTarget.nodeHeight <= 2 
+                && (transform.position.x >= currentTarget.nodePosition.X - nodeAcceptanceRange && transform.position.x <= currentTarget.nodePosition.X + nodeAcceptanceRange) 
+                && (transform.position.z >= currentTarget.nodePosition.Y - nodeAcceptanceRange && transform.position.z <= currentTarget.nodePosition.Y + nodeAcceptanceRange))
+                || ((currentTarget.nodeHeight < 5) && currentTarget.nodeHeight > 2) //If we are higher, allow a larger range of acceptance.
+                && (transform.position.x >= currentTarget.nodePosition.X - nodeAcceptanceRange * 1.5f && transform.position.x <= currentTarget.nodePosition.X + nodeAcceptanceRange * 1.5f)
+                && (transform.position.z >= currentTarget.nodePosition.Y - nodeAcceptanceRange * 1.5f && transform.position.z <= currentTarget.nodePosition.Y + nodeAcceptanceRange * 1.5f))
             {
-                //Grab the two nodes, and add them to the visitedPaths list, and remove two of the old ones.
+                //If we are far enough into the line, remove 13 nodess previous so we don't accidentally go backwards, but can still get back on track if need be.
                 int numberNodes = path.GetRange(0, path.IndexOf(currentTarget)).Count;
-                if(numberNodes > 5)
+                if(numberNodes > 13)
                 {
-                    numberNodes = 5;
+                    numberNodes = 13;
                 }
 
 
