@@ -13,7 +13,7 @@ namespace twe36
         public Node[,] grid;
         public float[,,] cost;
 
-        private float maxHeight = 5f; // If node cost is over 5, it is considered impassable
+        private float maxHeight = 5.1f; // If node cost is over 5, it is considered impassable
 
         public TerrainGraph()
         {
@@ -86,6 +86,7 @@ namespace twe36
 
                 // Check if the neighbouring node actually exist in the terrain
                 // y here is actually the z
+                Debug.Log(v.x >= 0 && v.x < tWidth);
                 bool doExist = (v.x >= 0 && v.x < tWidth && v.y >= 0 && v.y < tLength) ? true : false;
 
                 
@@ -97,7 +98,7 @@ namespace twe36
 
                     //ALSO CHECK THE SLOPE!!!
                     float neighbourHeight = grid[(int)v.x, (int)v.y].nodeHeight;
-                    bool passable = (neighbourHeight < maxHeight && slope < 25 && neighbourHeight < n.nodeHeight + 1.5);
+                    bool passable = (neighbourHeight < maxHeight && slope < 30 && neighbourHeight < n.nodeHeight + 0.75f);
 
                     if (passable)
                     {
@@ -130,8 +131,10 @@ namespace twe36
             }
 
             // Since graph is a tile grid, horizontal cost is 1
+            Debug.Log("Next cost: " + minCost);
             return (minCost) + 1;
         }
+
 
     }
 

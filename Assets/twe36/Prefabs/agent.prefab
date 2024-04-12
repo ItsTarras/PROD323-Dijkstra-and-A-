@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1549883302784890981
+--- !u!1 &4268208801993432968
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,12 +8,12 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2553062492852814903}
-  - component: {fileID: 8650612313345324836}
-  - component: {fileID: 4307788207852323327}
-  - component: {fileID: 4146442367706228511}
-  - component: {fileID: 2397936680280255258}
-  - component: {fileID: 6119119825741153298}
+  - component: {fileID: 3752264017702117056}
+  - component: {fileID: 2896871730670310}
+  - component: {fileID: 2523671512760897568}
+  - component: {fileID: 9074560451374101927}
+  - component: {fileID: 5256043771718245656}
+  - component: {fileID: 8558697447393120649}
   m_Layer: 0
   m_Name: agent
   m_TagString: Untagged
@@ -21,36 +21,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2553062492852814903
+--- !u!4 &3752264017702117056
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549883302784890981}
+  m_GameObject: {fileID: 4268208801993432968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 144.23, y: 8.81, z: 30.8}
+  m_LocalPosition: {x: 21.61, y: 0, z: 21}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8650612313345324836
+--- !u!33 &2896871730670310
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549883302784890981}
+  m_GameObject: {fileID: 4268208801993432968}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4307788207852323327
+--- !u!23 &2523671512760897568
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549883302784890981}
+  m_GameObject: {fileID: 4268208801993432968}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -86,13 +86,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &4146442367706228511
+--- !u!135 &9074560451374101927
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549883302784890981}
+  m_GameObject: {fileID: 4268208801993432968}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -107,34 +107,37 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2397936680280255258
+--- !u!114 &5256043771718245656
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549883302784890981}
+  m_GameObject: {fileID: 4268208801993432968}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57e1c1b55f931884aa61c9b2a96039f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForce: 6.76
-  avoidanceWeight: 0.8
+  moveForce: 10
+  nodeAcceptanceRange: 1
+  avoidanceWeight: 0.603
+  nodeAdditionDebug: 1
+  debugVelocity: 1
   raycastGroundDistance: 1
-  raycastDistance: 4
+  raycastDistance: 5
   avoidanceDistance: 5
   avoidanceAngle: 45
-  start: {fileID: 2553062492852814903}
+  start: {fileID: 0}
   end: {fileID: 0}
-  movementType: 1
---- !u!54 &6119119825741153298
+  movementType: 0
+--- !u!54 &8558697447393120649
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1549883302784890981}
+  m_GameObject: {fileID: 4268208801993432968}
   serializedVersion: 4
   m_Mass: 50
   m_Drag: 0

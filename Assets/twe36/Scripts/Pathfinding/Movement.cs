@@ -51,6 +51,8 @@ public class Movement : MonoBehaviour
     //Path variables for the algorithm.
     private List<Node> path = new List<Node>(); // Paht for the object to follow.
 
+    private List<Node> CurrentPath = new List<Node>(); // Paht for the object to follow.
+
     //visitedNodes list, with a dummy value to get started with.
     private List<Node> visitedPaths = new List<Node>
     {
@@ -71,6 +73,8 @@ public class Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         graph = new TerrainGraph();
+        start = transform;
+        end = GameObject.FindGameObjectWithTag("goal").transform;
         generatePath();
         debugPath();
     }
@@ -82,6 +86,7 @@ public class Movement : MonoBehaviour
         int startX = (int)start.position.x;
         int startZ = (int)start.position.z;
 
+        Debug.Log(graph.grid);
         Node startNode = graph.grid[startX, startZ];
 
         // End node position
@@ -302,7 +307,29 @@ public class Movement : MonoBehaviour
         // Iterate through each node in the path
         if(!finished)
         {
-            foreach (Node node in path)
+            if (visitedPaths[^1].nodePosition.X != 0 && visitedPaths[^1].nodePosition.Y != 0)
+            {
+                int visitedNodeIndex = path.IndexOf(visitedPaths[^1]);
+                int endIndex = Mathf.Min(visitedNodeIndex + 10, path.Count);
+
+                int count = endIndex - visitedNodeIndex;
+
+                if (count < 0)
+                {
+                    count = visitedNodeIndex + 10;
+                }
+
+                CurrentPath = path.GetRange(visitedNodeIndex, count);
+            }
+            else
+            {
+                CurrentPath = path;
+            }
+
+
+            
+
+            foreach (Node node in CurrentPath)
             {
                 if (!visitedPaths.Contains(node))
                 {
@@ -328,7 +355,7 @@ public class Movement : MonoBehaviour
             if ((currentTarget.nodeHeight <= 2 
                 && (transform.position.x >= currentTarget.nodePosition.X - nodeAcceptanceRange && transform.position.x <= currentTarget.nodePosition.X + nodeAcceptanceRange) 
                 && (transform.position.z >= currentTarget.nodePosition.Y - nodeAcceptanceRange && transform.position.z <= currentTarget.nodePosition.Y + nodeAcceptanceRange))
-                || ((currentTarget.nodeHeight < 5) && currentTarget.nodeHeight > 2) //If we are higher, allow a larger range of acceptance.
+                || ((currentTarget.nodeHeight < 5.1f) && currentTarget.nodeHeight > 2) //If we are higher, allow a larger range of acceptance.
                 && (transform.position.x >= currentTarget.nodePosition.X - nodeAcceptanceRange * 1.5f && transform.position.x <= currentTarget.nodePosition.X + nodeAcceptanceRange * 1.5f)
                 && (transform.position.z >= currentTarget.nodePosition.Y - nodeAcceptanceRange * 1.5f && transform.position.z <= currentTarget.nodePosition.Y + nodeAcceptanceRange * 1.5f))
             {
@@ -390,6 +417,12 @@ public class Movement : MonoBehaviour
             case (moveType.automatic):
                 if (path.Count > 1)
                 {
+                    int endIndex = Mathf.Min(10, path.Count);
+
+                    for (int i = 0; i < endIndex; i++)
+                    {
+
+                    }
                     Vector3 nodePoint = GetClosestPathPoint(path);
                     inputDirection = transform.position - nodePoint;
                 }
@@ -428,6 +461,12 @@ public class Movement : MonoBehaviour
 
             // Calculate the avoidance direction opposite to the average normal
             rb.AddForce(averageNormal * avoidanceWeight, ForceMode.Acceleration);
+
+            //Do a little jump if we are about to hit an obstacle.
+            if (forward.collider != null && forward.collider.CompareTag("obstacle"))
+            {
+                rb.AddForce(10 * Vector3.up, ForceMode.Acceleration);
+            }
         }
 
 
