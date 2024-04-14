@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+
     //Movement variables.
     [Range(0, 10f)]
     public float moveForce = 1f; // Acceleration force to move in.
@@ -41,6 +42,9 @@ public class Movement : MonoBehaviour
     RaycastHit backward;
     RaycastHit forward;
 
+    //Trap Logic
+    public GameObject jointToDeactivate;
+
 
     public enum moveType
     {
@@ -71,14 +75,19 @@ public class Movement : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        graph = new TerrainGraph();
-        start = transform;
-        end = GameObject.FindGameObjectWithTag("goal").transform;
+        instantiateVariables();
         generatePath();
         debugPath();
     }
 
+
+    void instantiateVariables()
+    {
+        rb = GetComponent<Rigidbody>();
+        graph = new TerrainGraph();
+        start = transform;
+        end = GameObject.FindGameObjectWithTag("goal").transform;
+    }
 
     void generatePath()
     {
@@ -147,7 +156,6 @@ public class Movement : MonoBehaviour
 
     private RaycastHit forwardRightRaycast()
     {
-        // Calculate the raycast origin
         Vector3 raycastOrigin = transform.position;
 
         //Have an initial raycast downwards (must be touching the ground.)
@@ -162,8 +170,8 @@ public class Movement : MonoBehaviour
 
         //Did we hit anything?
         RaycastHit hit;
-
-        if (Physics.Raycast(raycastOrigin, rightRaycastDirection, out hit, raycastDistance))
+        LayerMask layerMask = ~LayerMask.GetMask("Myself");
+        if (Physics.Raycast(raycastOrigin, rightRaycastDirection, out hit, raycastDistance, layerMask))
         {
             //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
             UnityEngine.Debug.DrawRay(raycastOrigin, rightRaycastDirection * raycastDistance, Color.blue);
@@ -181,16 +189,17 @@ public class Movement : MonoBehaviour
     }
     private RaycastHit backRaycast()
     {
-        // Calculate the raycast origin
         Vector3 raycastOrigin = transform.position;
 
         //Have an initial raycast aim forwards
         Vector3 raycastDirection = (Vector3.forward - rb.velocity * 5).normalized;
 
         RaycastHit hit;
+        LayerMask layerMask = ~LayerMask.GetMask("Myself");
+
 
         //If we detect anything, sent out a raycast signal.
-        if (Physics.Raycast(raycastOrigin, raycastDirection, out hit, raycastDistance))
+        if (Physics.Raycast(raycastOrigin, raycastDirection, out hit, raycastDistance, layerMask))
         {
             //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
             UnityEngine.Debug.DrawRay(raycastOrigin, raycastDirection * raycastDistance, Color.red);
@@ -209,16 +218,15 @@ public class Movement : MonoBehaviour
     //Generated a forward raycast with detection logic.
     private RaycastHit forwardRaycast()
     {
-        // Calculate the raycast origin
         Vector3 raycastOrigin = transform.position;
 
         //Have an initial raycast aim forwards
         Vector3 raycastDirection = (Vector3.forward + rb.velocity * 5).normalized;
 
         RaycastHit hit;
-
+        LayerMask layerMask = ~LayerMask.GetMask("Myself");
         //If we detect anything, sent out a raycast signal.
-        if (Physics.Raycast(raycastOrigin, raycastDirection, out hit, raycastDistance))
+        if (Physics.Raycast(raycastOrigin, raycastDirection, out hit, raycastDistance, layerMask))
         {
             //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
             UnityEngine.Debug.DrawRay(raycastOrigin, raycastDirection * raycastDistance, Color.red);
@@ -235,7 +243,6 @@ public class Movement : MonoBehaviour
 
     private RaycastHit forwardLeftRaycast()
     {
-        // Calculate the raycast origin
         Vector3 raycastOrigin = transform.position;
 
         //Have an initial raycast downwards (must be touching the ground.)
@@ -250,8 +257,8 @@ public class Movement : MonoBehaviour
 
         //Did we hit anything?
         RaycastHit hit;
-        
-        if (Physics.Raycast(raycastOrigin, leftRaycastDirection, out hit, raycastDistance))
+        LayerMask layerMask = ~LayerMask.GetMask("Myself");
+        if (Physics.Raycast(raycastOrigin, leftRaycastDirection, out hit, raycastDistance, layerMask))
         {
             //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
             UnityEngine.Debug.DrawRay(raycastOrigin, leftRaycastDirection * raycastDistance, Color.blue);
@@ -269,7 +276,6 @@ public class Movement : MonoBehaviour
     //This function checks if the sphere is in contact with the ground. If it is, we can move. (Using debugging rn).
     private void groundMovement(RaycastHit forward, RaycastHit backward, RaycastHit forwardLeft, RaycastHit forwardRight)
     {
-        // Calculate the raycast origin
         Vector3 raycastOrigin = transform.position;
 
         //Have an initial raycast downwards (must be touching the ground.)
@@ -352,12 +358,12 @@ public class Movement : MonoBehaviour
 
 
             //If we're near the current target node, add it to the list of visited nodes.
-            if ((currentTarget.nodeHeight <= 2 
+            if ((currentTarget.nodeHeight <= transform.position.y + 0.25f
                 && (transform.position.x >= currentTarget.nodePosition.X - nodeAcceptanceRange && transform.position.x <= currentTarget.nodePosition.X + nodeAcceptanceRange) 
                 && (transform.position.z >= currentTarget.nodePosition.Y - nodeAcceptanceRange && transform.position.z <= currentTarget.nodePosition.Y + nodeAcceptanceRange))
-                || ((currentTarget.nodeHeight < 5.1f) && currentTarget.nodeHeight > 2) //If we are higher, allow a larger range of acceptance.
-                && (transform.position.x >= currentTarget.nodePosition.X - nodeAcceptanceRange * 1.5f && transform.position.x <= currentTarget.nodePosition.X + nodeAcceptanceRange * 1.5f)
-                && (transform.position.z >= currentTarget.nodePosition.Y - nodeAcceptanceRange * 1.5f && transform.position.z <= currentTarget.nodePosition.Y + nodeAcceptanceRange * 1.5f))
+                || ((currentTarget.nodeHeight < 5.1f) && currentTarget.nodeHeight > transform.position.y + 0.25f) //If we are higher, allow a larger range of acceptance.
+                && (transform.position.x >= currentTarget.nodePosition.X - nodeAcceptanceRange * 1.75f && transform.position.x <= currentTarget.nodePosition.X + nodeAcceptanceRange * 1.75f)
+                && (transform.position.z >= currentTarget.nodePosition.Y - nodeAcceptanceRange * 1.75f && transform.position.z <= currentTarget.nodePosition.Y + nodeAcceptanceRange * 1.75f))
             {
                 //If we are far enough into the line, remove 13 nodess previous so we don't accidentally go backwards, but can still get back on track if need be.
                 int numberNodes = path.GetRange(0, path.IndexOf(currentTarget)).Count;
@@ -460,12 +466,48 @@ public class Movement : MonoBehaviour
             Vector3 averageNormal = (backward.normal + forward.normal + forwardLeft.normal + forwardRight.normal).normalized * Math.Min(moveForce, 10f);
 
             // Calculate the avoidance direction opposite to the average normal
-            rb.AddForce(averageNormal * avoidanceWeight, ForceMode.Acceleration);
+            if (forward.collider != null && forward.collider.CompareTag("agent"))
+            {
+                rb.AddForce(forward.normal * avoidanceWeight * Mathf.Min(moveForce, 10f), ForceMode.Acceleration);
+            }
+
+            if (backward.collider != null && backward.collider.CompareTag("agent"))
+            {
+                rb.AddForce(backward.normal * avoidanceWeight * Mathf.Min(moveForce, 10f), ForceMode.Acceleration);
+            }
+                
+            if (forwardLeft.collider != null && forwardLeft.collider.CompareTag("agent"))
+            {
+                rb.AddForce(forwardLeft.normal * avoidanceWeight * Mathf.Min(moveForce, 10f), ForceMode.Acceleration);
+            }
+                
+            if (forwardRight.collider != null && forwardRight.collider.CompareTag("agent"))
+            {
+                rb.AddForce(forwardRight.normal * avoidanceWeight * Mathf.Min(moveForce, 10f), ForceMode.Acceleration);
+            }
+
+
+            //Basic object avoidance. Is half of agent avoidance weight.
+            rb.AddForce(averageNormal * avoidanceWeight / 2, ForceMode.Acceleration);
+            //rb.AddForce(10 * Vector3.up, ForceMode.Acceleration);
+
+
 
             //Do a little jump if we are about to hit an obstacle.
             if (forward.collider != null && forward.collider.CompareTag("obstacle"))
             {
                 rb.AddForce(10 * Vector3.up, ForceMode.Acceleration);
+
+                //We can instead RECALCULATE THE PATH TO GO AROUND IT!!!!
+                //Check the closest node to this area point.
+                //Check the shortest path between the closest node to that point before hand, and the node closest after the object.
+                //Once the list is returned, remove the old object index from our node path, and add these new ones to the path.
+            }
+
+            //If we have an enemy agent appear behind us, RELEASE THE CORPSE!!!!
+            if (backward.collider != null && backward.collider.CompareTag("agent"))
+            {
+                jointToDeactivate.SetActive(false);
             }
         }
 

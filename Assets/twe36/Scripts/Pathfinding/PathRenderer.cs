@@ -1,5 +1,6 @@
 namespace twe36
 {
+    using System.Collections;
     using System.Collections.Generic;
     using TMPro;
     using UnityEngine;
@@ -38,13 +39,15 @@ namespace twe36
         {
             graph = new TerrainGraph();
             RenderPath();
-            UpdateInfo();
+            //UpdateInfo();
         }
 
         void Update()
         {
-            
+
         }
+
+
 
         private void RenderPath()
         {

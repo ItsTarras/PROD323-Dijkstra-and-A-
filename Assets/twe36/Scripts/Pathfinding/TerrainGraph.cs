@@ -98,7 +98,7 @@ namespace twe36
 
                     //ALSO CHECK THE SLOPE!!!
                     float neighbourHeight = grid[(int)v.x, (int)v.y].nodeHeight;
-                    bool passable = (neighbourHeight < maxHeight && slope < 30 && neighbourHeight < n.nodeHeight + 0.75f);
+                    bool passable = (neighbourHeight < maxHeight && (slope < 30 || slope >= 180) && neighbourHeight < n.nodeHeight + 0.75f);
 
                     if (passable)
                     {
@@ -124,6 +124,17 @@ namespace twe36
             for (int index = 0; index < 8; index++)
             {
                 float thisCost = cost[(int)n.nodePosition.X, (int)n.nodePosition.Y, index];
+
+
+                //Apply a raycast to check if there is an object above this node. If there is, return the maximum cost of 5000f.
+                RaycastHit hit;
+                if (Physics.Raycast(new Vector3(n.nodePosition.X, n.nodeHeight, n.nodePosition.Y), Vector3.up, out hit, 1f))
+                {
+                    // If the raycast hits a collider, there is an object above the node
+                    thisCost = 5000f;
+                }
+                
+                
                 if (thisCost < minCost) 
                 { 
                     minCost = thisCost;
@@ -134,8 +145,5 @@ namespace twe36
             Debug.Log("Next cost: " + minCost);
             return (minCost) + 1;
         }
-
-
     }
-
 }
