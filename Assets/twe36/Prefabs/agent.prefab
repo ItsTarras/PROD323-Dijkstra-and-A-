@@ -609,10 +609,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3752264017702117056}
-  - component: {fileID: 2896871730670310}
-  - component: {fileID: 2523671512760897568}
-  - component: {fileID: 9074560451374101927}
-  - component: {fileID: 5256043771718245656}
+  - component: {fileID: 9063033778279872613}
+  - component: {fileID: 5698069893389687740}
+  - component: {fileID: 994225858428581062}
+  - component: {fileID: 5737687089513808298}
   m_Layer: 0
   m_Name: agent
   m_TagString: Untagged
@@ -636,22 +636,36 @@ Transform:
   - {fileID: 5028986711433063312}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2896871730670310
-MeshFilter:
+--- !u!64 &9063033778279872613
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4268208801993432968}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &2523671512760897568
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
+--- !u!23 &5698069893389687740
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4268208801993432968}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -664,7 +678,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 11a87ddf97c43ff4c9a04540b82c7c43, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -686,7 +700,33 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &9074560451374101927
+--- !u!114 &994225858428581062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4268208801993432968}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57e1c1b55f931884aa61c9b2a96039f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveForce: 1
+  nodeAcceptanceRange: 1
+  avoidanceWeight: 0.5
+  generate: 1
+  nodeAdditionDebug: 0
+  debugVelocity: 0
+  raycastGroundDistance: 1
+  raycastDistance: 3
+  avoidanceDistance: 0.5
+  avoidanceAngle: 45
+  jointToDeactivate: {fileID: 0}
+  start: {fileID: 0}
+  end: {fileID: 0}
+  movementType: 0
+--- !u!135 &5737687089513808298
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -707,31 +747,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5256043771718245656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4268208801993432968}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57e1c1b55f931884aa61c9b2a96039f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveForce: 10
-  nodeAcceptanceRange: 1
-  avoidanceWeight: 0.705
-  nodeAdditionDebug: 1
-  debugVelocity: 1
-  raycastGroundDistance: 1
-  raycastDistance: 5
-  avoidanceDistance: 5
-  avoidanceAngle: 45
-  jointToDeactivate: {fileID: 0}
-  start: {fileID: 0}
-  end: {fileID: 0}
-  movementType: 0
 --- !u!1 &4734394964298263884
 GameObject:
   m_ObjectHideFlags: 0
@@ -1598,7 +1613,7 @@ GameObject:
   - component: {fileID: 4919442909554916663}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: agent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1730,8 +1745,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveForce: 10
-  nodeAcceptanceRange: 1
-  avoidanceWeight: 0.804
+  nodeAcceptanceRange: 1.5
+  avoidanceWeight: 1
+  generate: 1
   nodeAdditionDebug: 0
   debugVelocity: 0
   raycastGroundDistance: 1

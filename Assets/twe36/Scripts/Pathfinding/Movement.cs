@@ -19,7 +19,7 @@ public class Movement : MonoBehaviour
     //Introduce a variable to handle the ratios of the avoidance.
     [Range(0.0f, 1f)]
     public float avoidanceWeight = 0.5f;
-
+    public bool generate = true;
 
     //Debug information.
     public bool nodeAdditionDebug = false;
@@ -72,12 +72,14 @@ public class Movement : MonoBehaviour
     public Transform start; // The start transform node
     public Transform end; // The finish line.
     public moveType movementType;
+    private float elapsedTime = 0f;
 
     void Start()
     {
         instantiateVariables();
         generatePath();
         debugPath();
+        StartCoroutine(startCounter());
     }
 
 
@@ -87,9 +89,24 @@ public class Movement : MonoBehaviour
         graph = new TerrainGraph();
         start = transform;
         end = GameObject.FindGameObjectWithTag("goal").transform;
-    }
+            //Path variables for the algorithm.
+        path = new List<Node>(); // Paht for the object to follow.
 
-    void generatePath()
+        CurrentPath = new List<Node>(); // Paht for the object to follow.
+
+        //visitedNodes list, with a dummy value to get started with.
+        visitedPaths = new List<Node>
+        {
+            new Node(0, 0),
+            new Node(0, 0),
+            new Node(0, 0),
+        };
+
+        currentTarget = null;
+
+}
+
+void generatePath()
     {
         // Start node position
         int startX = (int)start.position.x;
@@ -129,8 +146,16 @@ public class Movement : MonoBehaviour
 
         //Constantly update the current target node that we want to move to.
         //Create Path
+    }
 
-
+    private IEnumerator startCounter()
+    {
+        while(true)
+        {
+            elapsedTime += 1f;
+            generate = true;
+            yield return new WaitForSeconds(1f);
+        }
         
     }
 
@@ -423,12 +448,6 @@ public class Movement : MonoBehaviour
             case (moveType.automatic):
                 if (path.Count > 1)
                 {
-                    int endIndex = Mathf.Min(10, path.Count);
-
-                    for (int i = 0; i < endIndex; i++)
-                    {
-
-                    }
                     Vector3 nodePoint = GetClosestPathPoint(path);
                     inputDirection = transform.position - nodePoint;
                 }
@@ -488,28 +507,45 @@ public class Movement : MonoBehaviour
 
 
             //Basic object avoidance. Is half of agent avoidance weight.
-            rb.AddForce(averageNormal * avoidanceWeight / 2, ForceMode.Acceleration);
+            rb.AddForce(averageNormal * avoidanceWeight, ForceMode.Acceleration);
             //rb.AddForce(10 * Vector3.up, ForceMode.Acceleration);
+
+
+            LayerMask layerMask = ~LayerMask.GetMask("Myself");
+
+            // Get the layer index of "Myself"
+            int myselfLayerIndex = LayerMask.NameToLayer("Myself");
+
+            // Shift 1 to the left by the layer index to create a bitmask for the "Myself" layer
+            int myselfLayerMask = 1 << myselfLayerIndex;
+
+            // Invert the bitmask to exclude the "Myself" layer
+            layerMask &= ~myselfLayerMask;
 
 
 
             //Do a little jump if we are about to hit an obstacle.
-            if (forward.collider != null && forward.collider.CompareTag("obstacle"))
+            if (forward.collider != null && forward.collider.CompareTag("obstacle") && (layerMask & (1 << forward.collider.gameObject.layer)) != 0 && generate == true)
             {
                 rb.AddForce(10 * Vector3.up, ForceMode.Acceleration);
-
+                generate = false;
                 //We can instead RECALCULATE THE PATH TO GO AROUND IT!!!!
                 //Check the closest node to this area point.
                 //Check the shortest path between the closest node to that point before hand, and the node closest after the object.
                 //Once the list is returned, remove the old object index from our node path, and add these new ones to the path.
+                start = transform;
+                instantiateVariables();
+                generatePath();
             }
 
             //If we have an enemy agent appear behind us, RELEASE THE CORPSE!!!!
-            if (backward.collider != null && backward.collider.CompareTag("agent"))
+            if (backward.collider != null && backward.collider.CompareTag("agent") && elapsedTime > 5f)
             {
                 jointToDeactivate.SetActive(false);
             }
         }
+
+
 
 
 

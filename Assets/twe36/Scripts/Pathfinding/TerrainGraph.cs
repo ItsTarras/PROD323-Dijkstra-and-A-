@@ -1,6 +1,7 @@
 namespace twe36
 {
     using System.Collections.Generic;
+    using Unity.VisualScripting.Dependencies.Sqlite;
     using UnityEngine;
 
     public class TerrainGraph : MonoBehaviour
@@ -14,7 +15,6 @@ namespace twe36
         public float[,,] cost;
 
         private float maxHeight = 5.1f; // If node cost is over 5, it is considered impassable
-
         public TerrainGraph()
         {
             // Get reference of the active terrain on the scene
@@ -28,6 +28,7 @@ namespace twe36
             tLength = Mathf.FloorToInt(tData.size.z);
             grid = new Node[tWidth, tLength];
             cost = new float[tWidth, tLength, 8]; // cost towards each 8 direction from current node
+
 
             // Populate the grid with nodes
             for (int x = 0; x < tWidth; x++)
@@ -86,7 +87,7 @@ namespace twe36
 
                 // Check if the neighbouring node actually exist in the terrain
                 // y here is actually the z
-                Debug.Log(v.x >= 0 && v.x < tWidth);
+                //Debug.Log(v.x >= 0 && v.x < tWidth);
                 bool doExist = (v.x >= 0 && v.x < tWidth && v.y >= 0 && v.y < tLength) ? true : false;
 
                 
@@ -98,15 +99,29 @@ namespace twe36
 
                     //ALSO CHECK THE SLOPE!!!
                     float neighbourHeight = grid[(int)v.x, (int)v.y].nodeHeight;
-                    bool passable = (neighbourHeight < maxHeight && (slope < 30 || slope >= 180) && neighbourHeight < n.nodeHeight + 0.75f);
 
+                    bool hits = false;
+
+                    //If there is no collision beneath us.
+                    RaycastHit hit;
+                    if (Physics.Raycast(new Vector3((int)v.x, neighbourHeight + 1f, (int)v.y), Vector3.down, out hit, 5f) && (slope < 90))
+                    {
+                        // If the raycast hits a collider, there is an object above the node
+                        hits = true;
+                    }
+                    else
+                    {
+                        //Return an empty list if any of the neighbours is a hole.
+                        return new List<Node>();
+                    }
+
+
+                    bool passable = (neighbourHeight < maxHeight && neighbourHeight < n.nodeHeight + 0.75f && hits);
+
+                    //If this node exists
                     if (passable)
                     {
-                        if (slope != 0)
-                        {
-                            Debug.Log(slope);
-                        }
-
+                        //Get a weighted average or something.
                         neighbours.Add(grid[(int)v.x, (int)v.y]);
                     }
                 }
@@ -120,29 +135,67 @@ namespace twe36
         public float NextMinimumCost(Node n)
         {
             float minCost = 5000f; // dummy value
+            List<Node> neighbours = GetNeighbours(n);
+            float modifier = 1f;
 
+            if (neighbours.Count == 8)
+            {
+                //Remove weighting from surfaces away from holes.
+                modifier = 0.5f;
+            }
+            float weightedAverage = 5000f;
             for (int index = 0; index < 8; index++)
             {
+                //Add a slope calculation or something
                 float thisCost = cost[(int)n.nodePosition.X, (int)n.nodePosition.Y, index];
 
-
-                //Apply a raycast to check if there is an object above this node. If there is, return the maximum cost of 5000f.
-                RaycastHit hit;
-                if (Physics.Raycast(new Vector3(n.nodePosition.X, n.nodeHeight, n.nodePosition.Y), Vector3.up, out hit, 1f))
+                if (neighbours.Count > index)
                 {
-                    // If the raycast hits a collider, there is an object above the node
-                    thisCost = 5000f;
-                }
-                
-                
-                if (thisCost < minCost) 
-                { 
-                    minCost = thisCost;
-                }
+                    float slope = PathAlgorithm.CalculateSlope(n, neighbours[index]);
+                    float normalSlope = slope / 180f;
+
+
+                    Vector3 nodePoint = new Vector3(n.nodePosition.X, n.nodeHeight, n.nodePosition.Y);
+
+                    //Apply a raycast to check if there is an object above this node. If there is, return the maximum cost of 5000f.
+                    RaycastHit hit;
+                    if (Physics.Raycast(nodePoint, Vector3.up, out hit, 1f))
+                    {
+                        // If the raycast hits a collider, there is an object above the node
+                        thisCost = 5000f;
+                    }
+
+
+
+                    // Convert world space to terrain space
+
+                    //Vector3 nodeNormal = tData.GetInterpolatedNormal((int)n.nodePosition.X, (int)n.nodePosition.Y);
+                    float weightedSlope = 0f;
+
+                    if (normalSlope > 180)
+                    {
+                        weightedSlope = 0f * normalSlope;
+                    }
+                    else
+                    {
+                        weightedSlope = 3f * normalSlope;
+                    }
+                    
+                    float weightedCost = 1f * thisCost;
+
+
+                    weightedAverage = weightedSlope + weightedCost;
+                    weightedAverage *= modifier;
+                    //Calculate based on a mixture of cost and slope.
+                    if (weightedAverage < minCost)
+                    {
+                        minCost = weightedAverage;
+                    }
+                }                
             }
 
             // Since graph is a tile grid, horizontal cost is 1
-            Debug.Log("Next cost: " + minCost);
+            //Debug.Log("Next cost: " + minCost);
             return (minCost) + 1;
         }
     }
