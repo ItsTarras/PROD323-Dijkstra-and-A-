@@ -10,7 +10,7 @@ namespace twe36
         private int tWidth;
         private int tLength;
         private float gridOffset = 0.5f;
-
+        public bool allowHoles = false;
         public Node[,] grid;
         public float[,,] cost;
 
@@ -100,23 +100,20 @@ namespace twe36
                     //ALSO CHECK THE SLOPE!!!
                     float neighbourHeight = grid[(int)v.x, (int)v.y].nodeHeight;
 
-                    bool hits = false;
-
                     //If there is no collision beneath us.
                     RaycastHit hit;
-                    if (Physics.Raycast(new Vector3((int)v.x, neighbourHeight + 1f, (int)v.y), Vector3.down, out hit, 5f) && (slope < 90))
+
+                    if(!allowHoles)
                     {
-                        // If the raycast hits a collider, there is an object above the node
-                        hits = true;
-                    }
-                    else
-                    {
-                        //Return an empty list if any of the neighbours is a hole.
-                        return new List<Node>();
+                        if (!(Physics.Raycast(new Vector3((int)v.x, neighbourHeight + 1f, (int)v.y), Vector3.down, out hit, 5f) && (slope < 90)))
+                        {
+                            // If the raycast hits a collider, there is an object above the node
+                            return new List<Node>();
+                        }
                     }
 
 
-                    bool passable = (neighbourHeight < maxHeight && neighbourHeight < n.nodeHeight + 0.75f && hits);
+                    bool passable = (neighbourHeight < maxHeight && neighbourHeight < n.nodeHeight + 0.75f);
 
                     //If this node exists
                     if (passable)
@@ -154,6 +151,15 @@ namespace twe36
                     float slope = PathAlgorithm.CalculateSlope(n, neighbours[index]);
                     float normalSlope = slope / 180f;
 
+                    /*
+                    foreach (Node node in GetNeighbours(neighbours[index]))
+                    {
+                        float cost = PathAlgorithm.CalculateSlope(neighbours[index], node);
+                        if (cost > 35 || cost < 0)
+                            thisCost += cost;
+                    }
+                    */
+
 
                     Vector3 nodePoint = new Vector3(n.nodePosition.X, n.nodeHeight, n.nodePosition.Y);
 
@@ -172,13 +178,13 @@ namespace twe36
                     //Vector3 nodeNormal = tData.GetInterpolatedNormal((int)n.nodePosition.X, (int)n.nodePosition.Y);
                     float weightedSlope = 0f;
 
-                    if (normalSlope > 180)
+                    if (normalSlope < 90 && normalSlope > 25)
                     {
                         weightedSlope = 0f * normalSlope;
                     }
                     else
                     {
-                        weightedSlope = 3f * normalSlope;
+                        weightedSlope = 2.5f * normalSlope;
                     }
                     
                     float weightedCost = 1f * thisCost;

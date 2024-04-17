@@ -6,7 +6,9 @@ public class StartSpawn : MonoBehaviour
 {
     public GameObject[] agentsToSpawn;
     public int numberOfAgents = 10;
-    public float spawnRadius = 5f;
+
+    [Range(0, 5)]
+    public float spawnRadius = 4f;
 
     void Start()
     {

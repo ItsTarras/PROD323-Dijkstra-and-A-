@@ -20,11 +20,12 @@ public class Movement : MonoBehaviour
     [Range(0.0f, 1f)]
     public float avoidanceWeight = 0.5f;
     public bool generate = true;
+    private float maxAngularSpeed = 7f;
 
     //Debug information.
     public bool nodeAdditionDebug = false;
     public bool debugVelocity = false;
-    
+    private float currentNodeDuration = 0f;
 
     //Raycast variables.
     [Range(0, 5f)]
@@ -78,8 +79,9 @@ public class Movement : MonoBehaviour
     {
         instantiateVariables();
         generatePath();
-        debugPath();
+        //debugPath();
         StartCoroutine(startCounter());
+        StartCoroutine(startCounter2());
     }
 
 
@@ -112,7 +114,7 @@ void generatePath()
         int startX = (int)start.position.x;
         int startZ = (int)start.position.z;
 
-        Debug.Log(graph.grid);
+        //Debug.Log(graph.grid);
         Node startNode = graph.grid[startX, startZ];
 
         // End node position
@@ -148,16 +150,7 @@ void generatePath()
         //Create Path
     }
 
-    private IEnumerator startCounter()
-    {
-        while(true)
-        {
-            elapsedTime += 1f;
-            generate = true;
-            yield return new WaitForSeconds(1f);
-        }
-        
-    }
+
 
     //Physics uses fixedUpdate for some reason. I DONT MAKE THE RULES!
     void FixedUpdate()
@@ -179,6 +172,7 @@ void generatePath()
 
     }
 
+    //Creates a forward right raycast.
     private RaycastHit forwardRightRaycast()
     {
         Vector3 raycastOrigin = transform.position;
@@ -212,6 +206,8 @@ void generatePath()
             return new RaycastHit();
         }
     }
+
+    //Creates a backwards raycast.
     private RaycastHit backRaycast()
     {
         Vector3 raycastOrigin = transform.position;
@@ -266,6 +262,7 @@ void generatePath()
         }
     }
 
+    //Creates a forward left raycast
     private RaycastHit forwardLeftRaycast()
     {
         Vector3 raycastOrigin = transform.position;
@@ -325,6 +322,26 @@ void generatePath()
         }
     }
 
+    //Limits the amount of recalculating to once a second.
+    private IEnumerator startCounter()
+    {
+        while (true)
+        {
+            generate = true;
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    //Increases a couple of time variables.
+    private IEnumerator startCounter2()
+    {
+        while (true)
+        {
+            currentNodeDuration += Time.deltaTime;
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+    }
 
     //Gets the closest point to the path the object is to.
     private Vector3 GetClosestPathPoint(List<Node> path)
@@ -362,7 +379,7 @@ void generatePath()
 
             foreach (Node node in CurrentPath)
             {
-                if (!visitedPaths.Contains(node))
+                if (!visitedPaths.Contains(node) || node != currentTarget)
                 {
                     Vector3 nodePoint = new Vector3(node.nodePosition.X, node.nodeHeight, node.nodePosition.Y);
 
@@ -390,6 +407,10 @@ void generatePath()
                 && (transform.position.x >= currentTarget.nodePosition.X - nodeAcceptanceRange * 1.75f && transform.position.x <= currentTarget.nodePosition.X + nodeAcceptanceRange * 1.75f)
                 && (transform.position.z >= currentTarget.nodePosition.Y - nodeAcceptanceRange * 1.75f && transform.position.z <= currentTarget.nodePosition.Y + nodeAcceptanceRange * 1.75f))
             {
+
+                //Reset our time limit before recalculation.
+                currentNodeDuration = 0f;
+
                 //If we are far enough into the line, remove 13 nodess previous so we don't accidentally go backwards, but can still get back on track if need be.
                 int numberNodes = path.GetRange(0, path.IndexOf(currentTarget)).Count;
                 if(numberNodes > 13)
@@ -485,22 +506,22 @@ void generatePath()
             Vector3 averageNormal = (backward.normal + forward.normal + forwardLeft.normal + forwardRight.normal).normalized * Math.Min(moveForce, 10f);
 
             // Calculate the avoidance direction opposite to the average normal
-            if (forward.collider != null && forward.collider.CompareTag("agent"))
+            if (forward.collider != null && forward.collider.CompareTag("Agent"))
             {
                 rb.AddForce(forward.normal * avoidanceWeight * Mathf.Min(moveForce, 10f), ForceMode.Acceleration);
             }
 
-            if (backward.collider != null && backward.collider.CompareTag("agent"))
+            if (backward.collider != null && backward.collider.CompareTag("Agent"))
             {
                 rb.AddForce(backward.normal * avoidanceWeight * Mathf.Min(moveForce, 10f), ForceMode.Acceleration);
             }
                 
-            if (forwardLeft.collider != null && forwardLeft.collider.CompareTag("agent"))
+            if (forwardLeft.collider != null && forwardLeft.collider.CompareTag("Agent"))
             {
                 rb.AddForce(forwardLeft.normal * avoidanceWeight * Mathf.Min(moveForce, 10f), ForceMode.Acceleration);
             }
                 
-            if (forwardRight.collider != null && forwardRight.collider.CompareTag("agent"))
+            if (forwardRight.collider != null && forwardRight.collider.CompareTag("Agent"))
             {
                 rb.AddForce(forwardRight.normal * avoidanceWeight * Mathf.Min(moveForce, 10f), ForceMode.Acceleration);
             }
@@ -525,7 +546,7 @@ void generatePath()
 
 
             //Do a little jump if we are about to hit an obstacle.
-            if (forward.collider != null && forward.collider.CompareTag("obstacle") && (layerMask & (1 << forward.collider.gameObject.layer)) != 0 && generate == true)
+            if (((forward.collider != null && forward.collider.CompareTag("obstacle") && (layerMask & (1 << forward.collider.gameObject.layer)) != 0) || currentNodeDuration > 1f) && generate == true)
             {
                 rb.AddForce(10 * Vector3.up, ForceMode.Acceleration);
                 generate = false;
@@ -539,9 +560,19 @@ void generatePath()
             }
 
             //If we have an enemy agent appear behind us, RELEASE THE CORPSE!!!!
-            if (backward.collider != null && backward.collider.CompareTag("agent") && elapsedTime > 5f)
+            if (backward.collider != null && elapsedTime > 5f)
             {
-                jointToDeactivate.SetActive(false);
+                if (backward.collider.CompareTag("Agent"))
+                {
+                    jointToDeactivate.SetActive(false);
+                }
+                else if (backward.collider.transform.parent != null)
+                {
+                    if (backward.collider.transform.parent.CompareTag("Agent"))
+                    {
+                        jointToDeactivate.SetActive(false);
+                    }
+                }
             }
         }
 
@@ -554,10 +585,15 @@ void generatePath()
         {
             Debug.Log("Current Velocity: " + rb.velocity); 
         }
-        // Limit the velocity if it exceeds the maximum velocity
+        // Velocity limits.
         if (rb.velocity.magnitude > maxLinearSpeed)
         {
             rb.velocity = rb.velocity.normalized * maxLinearSpeed;
+        }
+
+        if (rb.angularVelocity.magnitude > maxAngularSpeed)
+        {
+            rb.angularVelocity = rb.angularVelocity.normalized * maxAngularSpeed;
         }
     }
 }

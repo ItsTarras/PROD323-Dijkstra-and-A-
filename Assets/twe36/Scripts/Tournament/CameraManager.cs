@@ -110,15 +110,16 @@ public class CameraManager : MonoBehaviour
             inFreeLook = true;
         }
 
-        if (Input.GetKey(KeyCode.Space) && inFreeLook) // Look at a next agent
+        if (Input.GetKeyDown(KeyCode.Space) && inFreeLook) // Look at a next agent
         {
             index++;
+            Debug.Log(index);
             if(index >= agents.Length)
             {
                 index = 0;
             }
             
-            flCam.Follow = agents[index].transform;
+            flCam.Follow = agents[index].transform; 
             flCam.LookAt = agents[index].transform;  
         }
     }
