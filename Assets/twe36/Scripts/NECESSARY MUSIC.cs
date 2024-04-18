@@ -1,40 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class NECESSARYMUSIC : MonoBehaviour
+namespace twe36
 {
-    public AudioClip[] songs;
-
-    private AudioSource audioSource;
-
-    void Start()
+    public class NECESSARYMUSIC : MonoBehaviour
     {
-        audioSource = GetComponent<AudioSource>();
-        PlayRandomSong();
-        StartCoroutine(WaitForSongEnd());
-    }
+        public AudioClip[] songs;
 
-    void PlayRandomSong()
-    {
-        if (songs.Length > 0)
+        private AudioSource audioSource;
+
+        void Start()
         {
-            int randomIndex = Random.Range(0, songs.Length);
-            audioSource.clip = songs[randomIndex];
-            audioSource.Play();
-        }
-    }
-
-
-    IEnumerator WaitForSongEnd()
-    {
-        // Wait until the current song finishes playing
-        while (audioSource.isPlaying)
-        {
-            yield return null;
+            audioSource = GetComponent<AudioSource>();
+            PlayRandomSong();
+            StartCoroutine(WaitForSongEnd());
         }
 
-        // Play another random song once the current one is done
-        PlayRandomSong();
+        void PlayRandomSong()
+        {
+            if (songs.Length > 0)
+            {
+                int randomIndex = Random.Range(0, songs.Length);
+                audioSource.clip = songs[randomIndex];
+                audioSource.Play();
+            }
+        }
+
+
+        IEnumerator WaitForSongEnd()
+        {
+            // Wait until the current song finishes playing
+            while (audioSource.isPlaying)
+            {
+                yield return null;
+            }
+
+            // Play another random song once the current one is done
+            PlayRandomSong();
+        }
     }
 }

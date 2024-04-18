@@ -3,31 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EditorAudioListenerFollowsSceneCamera : MonoBehaviour
+namespace twe36
 {
-    private void Start()
+    public class EditorAudioListenerFollowsSceneCamera : MonoBehaviour
     {
-        if (Application.isEditor)
+        private void Start()
         {
-            foreach (AudioListener a in GameObject.FindObjectsOfType<AudioListener>())
-                a.enabled = false;
-
-            this.gameObject.AddComponent<AudioListener>();
-
-            StartCoroutine(FollowCamera());
-        }
-    }
-
-
-    IEnumerator FollowCamera()
-    {
-        while (true)
-        {
-            if (Camera.current)
+            if (Application.isEditor)
             {
-                this.transform.position = Camera.current.transform.position;
+                foreach (AudioListener a in GameObject.FindObjectsOfType<AudioListener>())
+                    a.enabled = false;
+
+                this.gameObject.AddComponent<AudioListener>();
+
+                StartCoroutine(FollowCamera());
             }
-            yield return null;
+        }
+
+
+        IEnumerator FollowCamera()
+        {
+            while (true)
+            {
+                if (Camera.current)
+                {
+                    this.transform.position = Camera.current.transform.position;
+                }
+                yield return null;
+            }
         }
     }
+
 }

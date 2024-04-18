@@ -164,8 +164,19 @@ namespace twe36
                     Vector3 nodePoint = new Vector3(n.nodePosition.X, n.nodeHeight, n.nodePosition.Y);
 
                     //Apply a raycast to check if there is an object above this node. If there is, return the maximum cost of 5000f.
+                    LayerMask layerMask = ~LayerMask.GetMask("Myself");
+
+                    // Get the layer index of "Myself"
+                    int myselfLayerIndex = LayerMask.NameToLayer("Myself");
+
+                    // Shift 1 to the left by the layer index to create a bitmask for the "Myself" layer
+                    int myselfLayerMask = 1 << myselfLayerIndex;
+
+                    // Invert the bitmask to exclude the "Myself" layer
+                    layerMask &= ~myselfLayerMask;
+
                     RaycastHit hit;
-                    if (Physics.Raycast(nodePoint, Vector3.up, out hit, 1f))
+                    if (Physics.Raycast(nodePoint, Vector3.up, out hit, 1f, layerMask))
                     {
                         // If the raycast hits a collider, there is an object above the node
                         thisCost = 5000f;
@@ -180,7 +191,7 @@ namespace twe36
 
                     if (normalSlope < 90 && normalSlope > 25)
                     {
-                        weightedSlope = 0f * normalSlope;
+                        weightedSlope = 1f * normalSlope;
                     }
                     else
                     {

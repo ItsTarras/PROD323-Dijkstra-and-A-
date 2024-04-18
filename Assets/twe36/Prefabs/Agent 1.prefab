@@ -146,10 +146,10 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.5000001, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.07400101, y: -0.4374954, z: 0.045643084}
+  m_ConnectedAnchor: {x: 0.07400046, y: -0.4374954, z: 0.045643084}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -330,6 +330,20 @@ MonoBehaviour:
   generate: 1
   nodeAdditionDebug: 0
   debugVelocity: 0
+  corpseParts:
+  - {fileID: 2599208969233129316}
+  - {fileID: 2951434223341565262}
+  - {fileID: 5196640564567503535}
+  - {fileID: 322425387952033079}
+  - {fileID: 7748068605516497155}
+  - {fileID: 5817805006331728389}
+  - {fileID: 5500484675093064940}
+  - {fileID: 1095502956205831144}
+  - {fileID: 4856275570406401218}
+  - {fileID: 7524386608896928142}
+  - {fileID: 5714658045997888809}
+  - {fileID: 4095516699655563985}
+  - {fileID: 2433019916435832381}
   raycastGroundDistance: 1
   raycastDistance: 5
   avoidanceDistance: 0.5
@@ -360,6 +374,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d7eff425364976b44bc4d9ac3f03a439, type: 3}
   - {fileID: 8300000, guid: 77dec95e4d733c84f93aa0189c60ba6d, type: 3}
   - {fileID: 8300000, guid: 1b9f4bb29c1e9734bbed5ca434923d1f, type: 3}
+  - {fileID: 8300000, guid: ed071843be925e44291a6af54e7ae534, type: 3}
+  - {fileID: 8300000, guid: 86e9d66ba8e71704aa22e274ab275007, type: 3}
+  - {fileID: 8300000, guid: c447047881146a640b55b519ad12f11f, type: 3}
+  - {fileID: 8300000, guid: 93bb0a3e41e64ee4aa1ecb6c484b7e9b, type: 3}
+  - {fileID: 8300000, guid: a71a4734a7ce3e04f8a0d1c01915c12d, type: 3}
 --- !u!82 &6137836611631652332
 AudioSource:
   m_ObjectHideFlags: 0
@@ -650,7 +669,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.3035636, y: -1.1687338, z: -0.00000014563983}
+  m_ConnectedAnchor: {x: -0.30356127, y: -1.1687338, z: -0.00000014563983}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -695,10 +714,10 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.5, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.071002565, y: 0.060580123, z: -0.000000020334554}
+  m_ConnectedAnchor: {x: -0.07100202, y: 0.060580123, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -905,7 +924,7 @@ SpringJoint:
   m_ConnectedAnchor: {x: -0.13800882, y: 0.5353153, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -1060,10 +1079,10 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.49999997, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000000035386112, y: 0.24585016, z: -0.000000020334554}
+  m_ConnectedAnchor: {x: 0.0000005408593, y: 0.24585016, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -1220,7 +1239,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.000000016671903, y: 0.7906042, z: -0.00000014352123}
+  m_ConnectedAnchor: {x: 0.0000025482182, y: 0.7906042, z: -0.00000014352123}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1265,10 +1284,10 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.49999997, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000000035386112, y: 0.6790729, z: -0.000000020334554}
+  m_ConnectedAnchor: {x: 0.0000005408593, y: 0.6790729, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -1469,10 +1488,10 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.5000001, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.08200342, y: -0.4374954, z: 0.045643084}
+  m_ConnectedAnchor: {x: -0.08200288, y: -0.4374954, z: 0.045643084}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -1694,7 +1713,7 @@ SpringJoint:
   m_ConnectedAnchor: {x: -0.07400265, y: -0.15233746, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -1851,7 +1870,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.00000001512894, y: 1.3472422, z: -0.00000014563983}
+  m_ConnectedAnchor: {x: 0.0000023123837, y: 1.3472422, z: -0.00000014563983}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1896,10 +1915,10 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.5, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000000035386112, y: 0.5353153, z: -0.000000020334554}
+  m_ConnectedAnchor: {x: 0.0000005408593, y: 0.5353153, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -2133,7 +2152,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.6420237, y: 0, z: -0.00000014352123}
+  m_ConnectedAnchor: {x: 0.64202625, y: 0, z: -0.00000014352123}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -2178,10 +2197,10 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.5, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.13626952, y: 0.5353153, z: -0.000000020334554}
+  m_ConnectedAnchor: {x: 0.13627008, y: 0.5353153, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -2340,7 +2359,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.024471777, y: -1.1318766, z: -0.00000029812688}
+  m_ConnectedAnchor: {x: 0.024465136, y: -1.1318766, z: -0.00000029812688}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -2385,10 +2404,10 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.5, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.07400101, y: -0.15233746, z: -0.000000020334554}
+  m_ConnectedAnchor: {x: 0.07400046, y: -0.15233746, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -2547,7 +2566,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.3078367, y: -1.1644747, z: -0.00000014563983}
+  m_ConnectedAnchor: {x: 0.30783907, y: -1.1644747, z: -0.00000014563983}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -2592,10 +2611,10 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.5, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.07200204, y: 0.061319914, z: -0.000000020334554}
+  m_ConnectedAnchor: {x: 0.07200259, y: 0.061319914, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -2754,7 +2773,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.000010677225, y: -0.8513759, z: -0.00000034691269}
+  m_ConnectedAnchor: {x: 0.0000057199422, y: -0.8513759, z: -0.00000034691269}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -2799,10 +2818,10 @@ SpringJoint:
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0.5, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.13626952, y: 0.24848334, z: -0.000000020334554}
+  m_ConnectedAnchor: {x: 0.13627008, y: 0.24848334, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
@@ -3009,7 +3028,7 @@ SpringJoint:
   m_ConnectedAnchor: {x: -0.14400245, y: 0.24848334, z: -0.000000020334554}
   serializedVersion: 2
   m_Spring: 10
-  m_Damper: 1
+  m_Damper: 0.71
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025

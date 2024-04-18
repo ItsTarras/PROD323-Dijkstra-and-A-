@@ -4,9 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - agent
-  - goal
-  - obstacle
+  - Agent
+  - Goal
+  - Obstacle
   layers:
   - Default
   - TransparentFX
