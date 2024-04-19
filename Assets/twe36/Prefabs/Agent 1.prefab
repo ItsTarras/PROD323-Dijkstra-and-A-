@@ -153,7 +153,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -374,11 +374,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d7eff425364976b44bc4d9ac3f03a439, type: 3}
   - {fileID: 8300000, guid: 77dec95e4d733c84f93aa0189c60ba6d, type: 3}
   - {fileID: 8300000, guid: 1b9f4bb29c1e9734bbed5ca434923d1f, type: 3}
-  - {fileID: 8300000, guid: ed071843be925e44291a6af54e7ae534, type: 3}
+  - {fileID: 8300000, guid: 05166e059cb7c004db10ceee2eda43be, type: 3}
   - {fileID: 8300000, guid: 86e9d66ba8e71704aa22e274ab275007, type: 3}
   - {fileID: 8300000, guid: c447047881146a640b55b519ad12f11f, type: 3}
   - {fileID: 8300000, guid: 93bb0a3e41e64ee4aa1ecb6c484b7e9b, type: 3}
   - {fileID: 8300000, guid: a71a4734a7ce3e04f8a0d1c01915c12d, type: 3}
+  - {fileID: 8300000, guid: b60426445148f1c4eaac56445b89f501, type: 3}
+  - {fileID: 8300000, guid: 489b8b5fe65bd4f4a873d0aab8f679df, type: 3}
 --- !u!82 &6137836611631652332
 AudioSource:
   m_ObjectHideFlags: 0
@@ -721,7 +723,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -928,7 +930,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -1086,7 +1088,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -1291,7 +1293,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -1495,7 +1497,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -1717,7 +1719,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -1922,7 +1924,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -1997,7 +1999,7 @@ FixedJoint:
   m_GameObject: {fileID: 5560670931933093134}
   m_ConnectedBody: {fileID: 2731336998601202189}
   m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: Infinity
+  m_BreakForce: 10
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -2204,7 +2206,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -2411,7 +2413,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -2618,7 +2620,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -2825,7 +2827,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -3032,7 +3034,7 @@ SpringJoint:
   m_MinDistance: 0
   m_MaxDistance: 0
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1

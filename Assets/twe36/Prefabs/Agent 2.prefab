@@ -153,7 +153,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -551,7 +551,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -758,7 +758,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -916,7 +916,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -1121,7 +1121,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -1325,7 +1325,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -1547,7 +1547,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -1752,7 +1752,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -2034,7 +2034,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -2241,7 +2241,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -2448,7 +2448,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -2655,7 +2655,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -2862,7 +2862,7 @@ SpringJoint:
   m_MinDistance: 0.1
   m_MaxDistance: 1
   m_Tolerance: 0.025
-  m_BreakForce: Infinity
+  m_BreakForce: 100
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
