@@ -95,6 +95,10 @@ namespace twe36
             graph = new TerrainGraph();
             start = transform;
             end = GameObject.FindGameObjectWithTag("Goal").transform;
+            if (end == null)
+            {
+                end = GameObject.FindGameObjectWithTag("goal").transform;
+            }
             //Path variables for the algorithm.
             path = new List<Node>(); // Paht for the object to follow.
 
@@ -446,7 +450,17 @@ namespace twe36
                     // If we're on the lat item of the path, stop moving.
                     if (currentTarget == path[^1])
                     {
-                        finished = true;
+                        if ((transform.position.x - end.position.x) < 1 && (transform.position.z - end.position.z < 1))
+                        {
+                            finished = true;
+                        }
+                        else
+                        {
+                            generate = false;
+                            start = transform;
+                            instantiateVariables();
+                            generatePath();
+                        }
                     }
                 }
             }
@@ -550,7 +564,8 @@ namespace twe36
 
 
                 //Do a little jump if we are about to hit an obstacle.
-                if (((forward.collider != null && forward.collider.CompareTag("Obstacle") && (layerMask & (1 << forward.collider.gameObject.layer)) != 0) || currentNodeDuration > 1f) && generate == true && !finished)
+                if ((((forward.collider != null && forward.collider.CompareTag("Obstacle") && (layerMask & (1 << forward.collider.gameObject.layer)) != 0) || currentNodeDuration > 1f) && generate == true && !finished) ||
+                    (((forward.collider != null && forward.collider.CompareTag("obstacle") && (layerMask & (1 << forward.collider.gameObject.layer)) != 0) || currentNodeDuration > 1f) && generate == true && !finished))
                 {
                     rb.AddForce(10 * Vector3.up, ForceMode.Acceleration);
                     generate = false;
@@ -564,12 +579,13 @@ namespace twe36
                 }
 
                 //If we have an enemy agent appear behind us, RELEASE THE CORPSE!!!!
-                if (backward.collider != null && elapsedTime > 8f)
+                if (backward.collider != null && elapsedTime > 15f)
                 {
                     if (backward.collider.CompareTag("Agent"))
                     {
                         jointToDeactivate.SetActive(false);
-                        foreach(Rigidbody r in corpseParts)
+                        Debug.Log("Removed Corpse");
+                        foreach (Rigidbody r in corpseParts)
                         {
                             r.isKinematic = true;
                             r.transform.SetParent(null);
@@ -584,7 +600,9 @@ namespace twe36
                             {
                                 r.isKinematic = true;
                                 r.transform.SetParent(null);
+                                
                             }
+                            Debug.Log("Removed Corpse");
                         }
                     }
                 }
