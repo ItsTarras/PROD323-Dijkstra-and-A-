@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 
@@ -24,6 +23,7 @@ namespace twe36
         public float avoidanceWeight = 0.5f;
         public bool generate = true;
         private float maxAngularSpeed = 7f;
+        public bool drawLines = false;
 
         //Debug information.
         public bool nodeAdditionDebug = false;
@@ -203,7 +203,11 @@ namespace twe36
                 //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
                 UnityEngine.Debug.DrawRay(raycastOrigin, rightRaycastDirection * raycastDistance, Color.blue);
                 // Draw the contact point
-                Debug.DrawRay(hit.point, hit.normal, Color.blue);
+                if(drawLines)
+                {
+                    Debug.DrawRay(hit.point, hit.normal, Color.blue);
+                }
+                
 
                 // Return the raycast hit information.
                 return hit;
@@ -230,8 +234,12 @@ namespace twe36
             //If we detect anything, sent out a raycast signal.
             if (Physics.Raycast(raycastOrigin, raycastDirection, out hit, raycastDistance, layerMask))
             {
-                //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
-                UnityEngine.Debug.DrawRay(raycastOrigin, raycastDirection * raycastDistance, Color.red);
+                if (drawLines)
+                {
+                    //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
+                    UnityEngine.Debug.DrawRay(raycastOrigin, raycastDirection * raycastDistance, Color.red);
+                }
+                
 
                 // Return the raycast hit information.
                 return hit;
@@ -257,8 +265,12 @@ namespace twe36
             //If we detect anything, sent out a raycast signal.
             if (Physics.Raycast(raycastOrigin, raycastDirection, out hit, raycastDistance, layerMask))
             {
-                //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
-                UnityEngine.Debug.DrawRay(raycastOrigin, raycastDirection * raycastDistance, Color.red);
+                if (drawLines)
+                {
+                    //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
+                    UnityEngine.Debug.DrawRay(raycastOrigin, raycastDirection * raycastDistance, Color.red);
+
+                }
 
                 // Return the raycast hit information.
                 return hit;
@@ -290,8 +302,12 @@ namespace twe36
             LayerMask layerMask = ~LayerMask.GetMask("Myself");
             if (Physics.Raycast(raycastOrigin, leftRaycastDirection, out hit, raycastDistance, layerMask))
             {
-                //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
-                UnityEngine.Debug.DrawRay(raycastOrigin, leftRaycastDirection * raycastDistance, Color.blue);
+                if(drawLines)
+                {
+                    //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
+                    UnityEngine.Debug.DrawRay(raycastOrigin, leftRaycastDirection * raycastDistance, Color.blue);
+
+                }
 
                 // Return the raycast hit information.
                 return hit;

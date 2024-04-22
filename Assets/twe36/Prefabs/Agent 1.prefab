@@ -154,6 +154,7 @@ MonoBehaviour:
   nodeAcceptanceRange: 1.5
   avoidanceWeight: 1
   generate: 1
+  drawLines: 0
   nodeAdditionDebug: 0
   debugVelocity: 0
   corpseParts:

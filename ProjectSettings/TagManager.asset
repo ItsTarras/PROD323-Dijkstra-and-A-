@@ -7,6 +7,8 @@ TagManager:
   - Agent
   - Goal
   - Obstacle
+  - obstacle
+  - PostProcessing
   layers:
   - Default
   - TransparentFX
@@ -14,7 +16,7 @@ TagManager:
   - Myself
   - Water
   - UI
-  - 
+  - PostProcessing
   - 
   - 
   - 
