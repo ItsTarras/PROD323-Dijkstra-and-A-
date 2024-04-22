@@ -200,12 +200,13 @@ namespace twe36
             LayerMask layerMask = ~LayerMask.GetMask("Myself");
             if (Physics.Raycast(raycastOrigin, rightRaycastDirection, out hit, raycastDistance, layerMask))
             {
-                //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
-                UnityEngine.Debug.DrawRay(raycastOrigin, rightRaycastDirection * raycastDistance, Color.blue);
+                
                 // Draw the contact point
                 if(drawLines)
                 {
                     Debug.DrawRay(hit.point, hit.normal, Color.blue);
+                    //Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
+                    UnityEngine.Debug.DrawRay(raycastOrigin, rightRaycastDirection * raycastDistance, Color.blue);
                 }
                 
 
@@ -341,8 +342,11 @@ namespace twe36
             {
                 autoMovement(hit, forward, backward, forwardLeft, forwardRight);
 
-                // Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
-                UnityEngine.Debug.DrawRay(raycastOrigin, raycastDirection * raycastGroundDistance, Color.red);
+                if(drawLines)
+                {
+                    // Show the direction that the raycast is aiming, so we can check if the rotation ruins it.
+                    UnityEngine.Debug.DrawRay(raycastOrigin, raycastDirection * raycastGroundDistance, Color.red);
+                }
             }
         }
 
