@@ -15,3 +15,10 @@
 
 - Agents will need to manually be placed in the Arena Manager listed under:
   ****TournamentTools**** > ArenaManager, in the inspector.
+
+
+- For my agent, go into twe36 > prefabs > UseThisAgent > Agent1
+  Please only use Agent1, as the other agents were AI used for testing the races.
+
+- My scene is in twe36 > Scenes > "twe36 Scene".
+  It is not Arena.
