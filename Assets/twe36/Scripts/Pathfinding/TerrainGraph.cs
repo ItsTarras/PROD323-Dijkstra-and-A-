@@ -14,7 +14,7 @@ namespace twe36
         public Node[,] grid;
         public float[,,] cost;
 
-        private float maxHeight = 5.1f; // If node cost is over 5, it is considered impassable
+        private float maxHeight = 30f; // If node cost is over 5, it is considered impassable
         public TerrainGraph()
         {
             // Get reference of the active terrain on the scene
@@ -111,9 +111,14 @@ namespace twe36
                             return new List<Node>();
                         }
                     }
+                    //float dotProduct = Vector3.Dot(Vector3.up, new Vector3(n.nodePosition.X, n.nodeHeight, n.nodePosition.Y).normalized);
+                    Vector3 positionToCheck = new Vector3((int)n.nodePosition.X, (int)n.nodeHeight, (int)n.nodePosition.Y);
+                    Vector3 normal = tData.GetInterpolatedNormal(positionToCheck.x / tData.size.x,
+                                                                   positionToCheck.z / tData.size.z);
 
+                    float angle = Vector3.Angle(normal, Vector3.up);
 
-                    bool passable = (neighbourHeight < maxHeight && neighbourHeight < n.nodeHeight + 0.75f);
+                    bool passable = (neighbourHeight < maxHeight && neighbourHeight < n.nodeHeight + 0.75f && angle < 50 || angle > 135);
 
                     //If this node exists
                     if (passable)
